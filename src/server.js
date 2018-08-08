@@ -21,6 +21,8 @@ const app = express();
 
 app.use('/graphql', graphQLHTTP({ schema }));
 
+const { CheckerPlugin } = require('awesome-typescript-loader')
+
 const webpackConfig = {
   mode: 'development',
 
@@ -31,6 +33,19 @@ const webpackConfig = {
     filename: 'bundle.js',
   },
 
+  resolve: {
+    extensions: [
+      ".web.js",
+      ".web.ts",
+      ".web.tsx",
+      ".js",
+      ".jsx",
+      ".json",
+      ".ts",
+      ".tsx"
+    ],
+  },
+
   module: {
     rules: [
       // See https://github.com/aws/aws-amplify/issues/686#issuecomment-387710340.
@@ -39,11 +54,14 @@ const webpackConfig = {
         include: /node_modules/,
         type: 'javascript/auto',
       },
-      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
+      { test: /\.ts|\.tsx|\.js|\.jsx$/,
+        exclude: /node_modules/,
+        use: ['babel-loader', 'awesome-typescript-loader'] },
     ],
   },
 
   plugins: [
+    new CheckerPlugin(),
     new CopyWebpackPlugin([
       'src/assets',
       'node_modules/todomvc-common/base.css',
