@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./production-server/",
+    "allowJs": true,
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "jsx": "preserve",
+    "strict": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "pretty": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "target": "esnext",
+    "module": "commonjs",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": [
+      "esnext", "dom", "es2017"
+    ]    
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}

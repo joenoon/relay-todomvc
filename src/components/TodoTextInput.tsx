@@ -16,7 +16,7 @@ const defaultProps = {
   commitOnBlur: false,
 };
 
-class TodoTextInput extends React.Component {
+class TodoTextInput extends React.Component<any> {
   constructor(props, context) {
     super(props, context);
 

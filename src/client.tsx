@@ -14,7 +14,7 @@ import 'todomvc-common/base';
   const resolver = new Resolver(
     createRelayEnvironment(
       // eslint-disable-next-line no-underscore-dangle
-      new RelayClientSSR(window.__RELAY_PAYLOADS__),
+      new RelayClientSSR(window['__RELAY_PAYLOADS__']),
       '/graphql',
     ),
   );

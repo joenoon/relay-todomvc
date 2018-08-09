@@ -8,14 +8,21 @@ import RemoveTodoMutation from '../mutations/RemoveTodoMutation';
 import RenameTodoMutation from '../mutations/RenameTodoMutation';
 import TodoTextInput from './TodoTextInput';
 
-const propTypes = {
-  viewer: PropTypes.object.isRequired,
-  todo: PropTypes.object.isRequired,
-  relay: PropTypes.object.isRequired,
-};
+import {Todo_todo} from '../__generated__/Todo_todo.graphql';
+import {Todo_viewer} from '../__generated__/Todo_viewer.graphql';
 
-class Todo extends React.Component {
-  constructor(props, context) {
+interface Props {
+  viewer: Todo_viewer;
+  todo: Todo_todo;
+  relay: any;
+}  
+
+interface State {
+  isEditing: boolean;
+}
+
+class Todo extends React.Component<Props, State> {
+  constructor(props: Props, context: any) {
     super(props, context);
 
     this.state = {
@@ -104,7 +111,6 @@ class Todo extends React.Component {
   }
 }
 
-Todo.propTypes = propTypes;
 
 export default createFragmentContainer(Todo, {
   viewer: graphql`

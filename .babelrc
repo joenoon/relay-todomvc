@@ -1,12 +1,13 @@
 {
   "presets": [
-    ["env", {
-      "loose": true
-    }],
-    "stage-2",
-    "react"
+    "@babel/react",
+    "@babel/typescript",
+    ["@babel/env", {"loose": true, "useBuiltIns": "usage"}]
   ],
   "plugins": [
-    ["relay", { "schema": "src/data/schema.graphql" }]
+    "@babel/plugin-proposal-class-properties",
+    ["@babel/plugin-transform-runtime", {"helpers": false, "regenerator": true}],
+    ["relay", { "schema": "src/data/schema.graphql", "artifactDirectory": "./src/__generated__" }]
   ]
+
 }

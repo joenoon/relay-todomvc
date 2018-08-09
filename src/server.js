@@ -9,7 +9,8 @@ import ReactDOMServer from 'react-dom/server';
 import RelayServerSSR from 'react-relay-network-modern-ssr/lib/server';
 import serialize from 'serialize-javascript';
 import webpack from 'webpack';
-import webpackMiddleware from 'webpack-dev-middleware';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import createRelayEnvironment from './createRelayEnvironment';
 import { historyMiddlewares, render, routeConfig } from './router';
@@ -24,11 +25,26 @@ app.use('/graphql', graphQLHTTP({ schema }));
 const webpackConfig = {
   mode: 'development',
 
-  entry: ['babel-polyfill', 'isomorphic-fetch', './src/client'],
+  entry: ['babel-polyfill', 'isomorphic-fetch', './src/clientjs', 'webpack-hot-middleware/client'],
 
   output: {
     path: '/',
     filename: 'bundle.js',
+  },
+
+  resolve: {
+    extensions: [
+      ".graphql.js",
+      ".web.js",
+      ".web.ts",
+      ".web.tsx",
+      ".js",
+      ".jsx",
+      ".json",
+      ".ts",
+      ".tsx",
+      ".mjs",
+    ],
   },
 
   module: {
@@ -39,7 +55,7 @@ const webpackConfig = {
         include: /node_modules/,
         type: 'javascript/auto',
       },
-      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
+      { test: /\.ts|\.tsx|\.js|\.jsx$/, exclude: /node_modules/, use: 'babel-loader' },
     ],
   },
 
@@ -49,15 +65,22 @@ const webpackConfig = {
       'node_modules/todomvc-common/base.css',
       'node_modules/todomvc-app-css/index.css',
     ]),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 
   devtool: 'cheap-module-source-map',
 };
 
+const webpackCompiler = webpack(webpackConfig);
 app.use(
-  webpackMiddleware(webpack(webpackConfig), {
+  webpackDevMiddleware(webpackCompiler, {
     stats: { colors: true },
   }),
+);
+
+app.use(
+  webpackHotMiddleware(webpackCompiler, {})
 );
 
 app.use(async (req, res) => {

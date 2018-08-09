@@ -29,7 +29,7 @@ class TodoApp extends React.Component {
             <h1>todos</h1>
             <TodoTextInput
               className="new-todo"
-              placeholder="What needs to be done?"
+              placeholder="What needs to be donedz?"
               autoFocus
               onSave={this.onNewTodoSave}
             />
